@@ -1,32 +1,40 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.*;
 public class util {
-	public int readDataFile(String filename) throws IOException{
+	public ArrayList<Transaction> readDataFile(String filename) throws IOException{
 		BufferedReader in;
 		Pattern pattern = Pattern.compile("(\\{.+?\\})");
 		in = new BufferedReader(new FileReader(filename));
 		String s;
-
+		ArrayList<Transaction> trans = new ArrayList<Transaction>();
 		while((s=in.readLine())!=null){
+			Transaction transaction = new Transaction();
+			
 			Matcher matcher = pattern.matcher(s);
 			int num=0;
 	
 			while(matcher.find(num)){
+				ItemSet set = new ItemSet();
 				String group = matcher.group();
 				String record = group.substring(1, group.length()-1);
 				String arr[] = record.split(",");
 				for(int i=0; i < arr.length; i++){
-					System.out.printf("%s ",arr[i].replaceAll(" ", ""));
+					//System.out.printf("%s ",arr[i].replaceAll(" ", ""));
+					set.items.add(Integer.valueOf(arr[i].replace(" ", "").trim()));
 				}
-				System.out.printf("||");
+				
+				//System.out.printf("||");
+				transaction.itemSets.add(set);
 				num+=group.length();
 			}
-			System.out.println();
+			//System.out.println();
+			trans.add(transaction);
 		}
 	in.close();
-	return 0;
+	return trans;
 	}
 	
 	public int readParaFile(String filename) throws IOException{
