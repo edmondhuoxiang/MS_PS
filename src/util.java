@@ -2,8 +2,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.*;
 public class util {
+	public static Float sdc;
+	
 	public ArrayList<Transaction> readDataFile(String filename) throws IOException{
 		BufferedReader in;
 		Pattern pattern = Pattern.compile("(\\{.+?\\})");
@@ -37,12 +40,13 @@ public class util {
 	return trans;
 	}
 	
-	public int readParaFile(String filename) throws IOException{
+	public static HashMap<Integer, Float> readParaFile(String filename) throws IOException{
 		BufferedReader in_para;
 		Pattern pattern1 = Pattern.compile("MIS\\(([0-9]+)\\) = ([^\r\n]*)");
 		Pattern pattern2 = Pattern.compile("SDC = (.*)");
 		in_para = new BufferedReader(new FileReader(filename));
 		String s;
+		HashMap<Integer, Float> mis = new HashMap<Integer, Float>();
 		while((s = in_para.readLine())!=null){
 			Matcher matcher1 = pattern1.matcher(s);
 			Matcher matcher2 = pattern2.matcher(s);	
@@ -53,11 +57,12 @@ public class util {
 				int indexStart = group.indexOf("(");
 				int indexEnd = group.indexOf(")");
 				String subGroup1 = group.substring(indexStart+1, indexEnd);
-				int num1 = Integer.parseInt(subGroup1);
+				int id = Integer.parseInt(subGroup1);
 				int index = group.indexOf("=");
 				String subGroup2 = group.substring(index+2);
-				float num2 = Float.parseFloat(subGroup2);
-				System.out.printf("%d,%f\n",num1, num2);
+				float numMis = Float.parseFloat(subGroup2);
+				//System.out.printf("%d,%f\n",num1, num2);
+				mis.put(id, numMis);
 				num+=group.length();
 			}
 			num=0;
@@ -67,12 +72,16 @@ public class util {
 				int index = group.indexOf("=");
 				String subGroup = group.substring(index+2);
 				float value = Float.parseFloat(subGroup);
-				System.out.printf("SCD=%f\n",value);
+				//System.out.printf("SCD=%f\n",value);
+				sdc = value;
 				num += group.length();
 			}
 			System.out.println();
 		}
-		
-		return 0;
+		in_para.close();
+		return mis;
+	}
+	public Float getSDC(){
+		return this.sdc;
 	}
 }

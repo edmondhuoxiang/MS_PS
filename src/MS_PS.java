@@ -1,19 +1,37 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MS_PS {
-	public static void main(String [ ] args) throws IOException{
-		ArrayList<Transaction> trans;
-		String dataFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/data.txt";
-		String paraFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/paraTest.txt";
+	public static HashMap<Integer, Float> MIS;
+	public ArrayList<Transaction> T;
+	public static int N; //the number of transaction in T;
+	public static Float SDC;
+	
+	MS_PS(String paraFile, String dataFile) throws IOException{
 		util utils = new util();
-		trans = utils.readDataFile(dataFile);
+		T = utils.readDataFile(dataFile);
+		MIS = util.readParaFile(paraFile);
+		SDC = utils.getSDC();
+	}
+	
+	public static void main(String [ ] args) throws IOException{
+		String dataFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/dataTest.txt";
+		String paraFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/paraTest.txt";
 		
-		for(int i=0; i<trans.size(); i++){
-			Transaction tran = trans.get(i);
+		MS_PS msps = new MS_PS(paraFile, dataFile);
+		
+		
+		for(int i=0; i < msps.T.size(); i++){
+			Transaction tran = msps.T.get(i);
 			tran.print();
 		}
-		//utils.readParaFile(paraFile);
+		for(Integer id : msps.MIS.keySet()){
+			System.out.println(id + ":" + msps.MIS.get(id));
+		}
+		System.out.print(msps.SDC);
+		
+		
 	}
 }
