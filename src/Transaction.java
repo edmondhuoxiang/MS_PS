@@ -42,7 +42,7 @@ public class Transaction {
 	}
 	public void print(){
 		//print out everything contained in this transaction
-		System.out.printf("		<");
+		System.out.printf("<");
 		for(int i=0; i < itemSets.size(); i++){
 			System.out.printf("{");
 			ItemSet set = itemSets.get(i);

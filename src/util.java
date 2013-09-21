@@ -2,7 +2,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 import java.util.regex.*;
 public class util {
 	public static Float sdc;
@@ -76,7 +80,7 @@ public class util {
 				sdc = value;
 				num += group.length();
 			}
-			System.out.println();
+			//System.out.println();
 		}
 		in_para.close();
 		return mis;
@@ -84,4 +88,50 @@ public class util {
 	public Float getSDC(){
 		return this.sdc;
 	}
+	
+	public List<Integer> sortMIS(HashMap<Integer, Float>mis){
+		Object[] arr = mis.keySet().toArray();	
+		List<Integer> keyset =  new ArrayList<Integer>();
+		for(int i=0; i<arr.length; i++){
+			keyset.add(Integer.valueOf(arr[i].toString()));
+		}
+		Collections.sort(keyset);
+		return keyset;
+	}
+	
+	public HashMap<Integer, Integer> contFreq(HashMap<Integer, Float>mis, ArrayList<Transaction>trans){
+		HashMap<Integer, Integer>L = new HashMap<Integer, Integer>();
+		for(Integer id : mis.keySet()){
+			L.put(id, 0);
+		}
+		for(Transaction tran : trans){
+			for(Integer key : mis.keySet()){
+				if(this.isItemInElement(key, tran)){
+					Integer tmp = L.get(key);
+					L.put(key, tmp+1);
+				}
+			}
+		}
+		return L;
+	}
+	
+	public boolean isItemInElement(Integer item, Transaction tran){
+		for(ItemSet is : tran.itemSets){
+			if(is.items.contains(item))
+				return true;
+		}
+		return false;
+	}
+	public HashMap<Integer, Integer> findFreqL(HashMap<Integer, Float>mis, HashMap<Integer, Integer> L, List<Integer>M, Integer n){
+		//Find all frequent items.
+		HashMap<Integer, Integer> freqL = new HashMap<Integer, Integer>();
+		for(Integer item: M){
+			Integer count = L.get(item);
+			if(((float)count)/n >= mis.get(item)){
+				freqL.put(item, count);
+			}
+		}
+		return freqL;
+	}
+	
 }
