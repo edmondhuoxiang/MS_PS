@@ -24,12 +24,19 @@ public class Transaction {
 		return itemSets.get(0).items.get(0);
 	}
 	
-	public Integer getlastItem(){
+	public Integer getLastItem(){
 		//return the id of the last item in this transaction
 		ArrayList<Integer> set = itemSets.get(itemSets.size()-1).items;
 		return set.get(set.size()-1);
 	}
 	
+	public ItemSet getLastItemSet(){
+		return itemSets.get(itemSets.size()-1);
+	}
+	
+	public ItemSet getFirstItemSet(){
+		return itemSets.get(0);
+	}
 	public Transaction copy(){
 		//return a copy of this Transaction
 		Transaction cp = new Transaction();
@@ -54,7 +61,7 @@ public class Transaction {
 		System.out.println(">");
 	}
 	
-	public boolean contained(Transaction trans){
+	public boolean isContained(Transaction trans){
 		boolean result = true;
 		int m = this.itemSets.size();
 		int n = trans.itemSets.size();
@@ -83,11 +90,43 @@ public class Transaction {
 	public boolean equals(Object transaction){
 		Transaction trans = (Transaction) transaction;
 		boolean result;
-		if(this.contained(trans)&&this.itemSets.size()==trans.itemSets.size()&&this.getItems().size()==trans.getItems().size())
+		if(this.isContained(trans)&&this.itemSets.size()==trans.itemSets.size()&&this.getItems().size()==trans.getItems().size())
 			result = true;
 		else
 			result = false;
 		return result;
+	}
+	
+	public Transaction getItemSetAfterIndexOf(int index){
+		Transaction res = this.copy();
+		for(int i=0; i<index; i++)
+			res.itemSets.remove(0);
+		return res;
+	}
+	
+	public void deleteFirstNItemSets(int index){
+		for(int i=0; i<index; i++){
+			this.itemSets.get(0).items.clear();
+			this.itemSets.remove(0);
+		}
+	}
+	
+	public Integer getItem(int pos, int ind){
+		return this.itemSets.get(pos).items.get(ind);
+	}
+	
+	public ItemSet getItemSet(int pos){
+		return this.itemSets.get(pos);
+	}
+	public void delItemSetIndexOf(int pos){
+		this.itemSets.get(pos).items.clear();
+		this.itemSets.remove(pos);
+	}
+	public boolean isEmpty(){
+		if(this.itemSets.size()>0)
+			return false;
+		else
+			return true;
 	}
 	
 }

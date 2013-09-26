@@ -89,9 +89,9 @@ public class util {
 		return this.sdc;
 	}
 	
-	public List<Integer> sortMIS(HashMap<Integer, Float>mis){
+	public ArrayList<Integer> sortMIS(HashMap<Integer, Float>mis){
 		Object[] arr = mis.keySet().toArray();	
-		List<Integer> keyset =  new ArrayList<Integer>();
+		ArrayList<Integer> keyset =  new ArrayList<Integer>();
 		for(int i=0; i<arr.length; i++){
 			keyset.add(Integer.valueOf(arr[i].toString()));
 		}
@@ -106,7 +106,7 @@ public class util {
 		}
 		for(Transaction tran : trans){
 			for(Integer key : mis.keySet()){
-				if(this.isItemInElement(key, tran)){
+				if(this.isItemInTransaction(key, tran)){
 					Integer tmp = L.get(key);
 					L.put(key, tmp+1);
 				}
@@ -115,13 +115,32 @@ public class util {
 		return L;
 	}
 	
-	public boolean isItemInElement(Integer item, Transaction tran){
+	public Pair<Integer, Integer> isItemInElement(Integer item, Transaction tran){
+		Integer pos, ind;
+		Pair<Integer, Integer> pair = new Pair<Integer, Integer>(-1, -1);
+		for(pos=0; pos < tran.itemSets.size(); pos++){
+			ItemSet is = tran.itemSets.get(pos);
+			for(ind = 0; ind < is.items.size(); ind++){
+				Integer res = is.items.get(ind);
+				if(res == item){
+					pair.setFirst(pos);
+					pair.setSecond(ind);
+					return pair;
+				}
+			}
+		}
+		return pair;
+	}
+	
+	public boolean isItemInTransaction(Integer item, Transaction tran){
 		for(ItemSet is : tran.itemSets){
 			if(is.items.contains(item))
 				return true;
 		}
 		return false;
 	}
+	
+
 	public HashMap<Integer, Integer> findFreqL(HashMap<Integer, Float>mis, HashMap<Integer, Integer> L, List<Integer>M, Integer n){
 		//Find all frequent items.
 		HashMap<Integer, Integer> freqL = new HashMap<Integer, Integer>();
@@ -134,4 +153,114 @@ public class util {
 		return freqL;
 	}
 	
+	public ArrayList<Transaction> removej(ArrayList<Transaction> transet, Integer i, HashMap<Integer, Integer>L, Float SDC, Integer n){
+		int sind = 0;
+		int flagjump = 0;
+		while(sind < transet.size()){
+			int eind = 0;
+			while(eind < transet.get(sind).itemSets.size()){
+				int iind = 0;
+				while(iind < transet.get(sind).itemSets.get(eind).items.size()){
+					Integer item = transet.get(sind).itemSets.get(eind).items.get(iind);
+					if (Math.abs((float)(L.get(item))/n - (float)(L.get(i))/n ) > SDC){
+						if(transet.get(sind).itemSets.size()==1 && transet.get(sind).itemSets.get(eind).items.size()==1){
+							flagjump = 1;
+							transet.remove(sind);
+							sind -= 1;
+							break;
+						}
+						else if(transet.get(sind).itemSets.get(eind).items.size()==1){
+							transet.get(sind).itemSets.remove(eind);
+							eind -= 1;
+							break;
+						}
+						else{
+							transet.get(sind).itemSets.get(eind).items.remove(iind);
+							iind -= 1;
+						}
+					}
+					iind += 1;
+				}
+				if(flagjump == 1){
+					flagjump = 0;
+					break;
+				}
+				eind += 1;
+			}
+			sind += 1;
+		}
+		return transet;
+	}
+	
+	public Pair<Integer, Integer> isContained(Transaction query, Transaction tran){
+		int lenQuery = query.itemSets.size();
+		int lenTran = tran.itemSets.size();
+		int i=0; 
+		int j=0;
+		if(lenQuery>lenTran)
+			return new Pair<Integer, Integer>(-1, -1);
+		while(i<lenQuery && j<lenTran){
+			if(query.itemSets.get(i).items.size()>tran.itemSets.get(j).items.size()){
+				//no change in tran[j]
+				j += 1;
+				continue;
+			}else{
+				ArrayList<Integer>setQuery = query.itemSets.get(i).items;
+				ArrayList<Integer>setTran = tran.itemSets.get(j).items;
+				if(setTran.containsAll(setQuery)){
+					i++;j++;
+				}
+				else{
+					j++;
+				}
+			}
+		}
+		if(i < lenQuery)
+			return new Pair<Integer, Integer>(-1,-1);
+		else{
+			int pos = j-1;
+			int index = tran.itemSets.get(pos).items.indexOf(query.getLastItem());
+			return new Pair<Integer, Integer>(pos,index);
+		}
+	}
+	public static ArrayList<Transaction> removei(ArrayList<Transaction> S, Integer i){
+		int sind=0;
+		boolean flag = false;
+		while(sind < S.size()){
+			int eind=0;
+			while(eind < S.get(sind).itemSets.size()){
+				int iind=0;
+				while(iind < S.get(sind).itemSets.get(eind).items.size()){
+					Integer item = S.get(sind).getItem(eind, iind);
+					if(item == i){
+						if(S.get(sind).itemSets.size()==1 && S.get(sind).itemSets.get(eind).items.size()==1){
+							flag = true;
+							S.remove(sind);
+							sind--;
+							break;
+						}
+						else if(S.get(sind).itemSets.get(eind).items.size()==1){
+							Transaction tmp = S.get(sind);
+							tmp.itemSets.remove(eind);
+							S.set(sind, tmp);
+							eind--;
+							break;
+						}
+						else{
+							S.get(sind).itemSets.get(eind).items.remove(iind);
+							iind--;
+						}
+					}
+					iind++;
+				}
+				if(flag){
+					flag=false;
+					break;
+				}
+				eind++;
+			}
+			sind++;
+		}
+		return S;
+	}
 }
