@@ -98,12 +98,13 @@ public class Transaction {
 	}
 	
 	public Transaction getItemSetAfterIndexOf(int index){
+		int num=this.itemSets.size();
 		Transaction res = this.copy();
 		if(index >= 0)
 			for(int i=0; i<index; i++)
 				res.itemSets.remove(0);
 		else{
-			for(int i=0; i< this.itemSets.size()+index; i++)
+			for(int i=0; i< num+index; i++)
 				res.itemSets.remove(0);
 		}
 		return res;

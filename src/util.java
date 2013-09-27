@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ public class util {
 		String s;
 		ArrayList<Transaction> trans = new ArrayList<Transaction>();
 		while((s=in.readLine())!=null){
+			if (s== "")
+				continue;
 			Transaction transaction = new Transaction();
 			
 			Matcher matcher = pattern.matcher(s);
@@ -52,6 +55,8 @@ public class util {
 		String s;
 		HashMap<Integer, Float> mis = new HashMap<Integer, Float>();
 		while((s = in_para.readLine())!=null){
+			if(s=="")
+				continue;
 			Matcher matcher1 = pattern1.matcher(s);
 			Matcher matcher2 = pattern2.matcher(s);	
 			int num = 0;
@@ -162,7 +167,14 @@ public class util {
 				int iind = 0;
 				while(iind < transet.get(sind).itemSets.get(eind).items.size()){
 					Integer item = transet.get(sind).itemSets.get(eind).items.get(iind);
-					if (Math.abs((float)(L.get(item))/n - (float)(L.get(i))/n ) > SDC){
+					float tmpres1 = (float)(L.get(item));
+					float tmpres2 = (float)(L.get(item))/n;
+					float tmpres3 = (float)(L.get(i));
+					float tmpres4 = (float)(L.get(i))/n;
+					float tmpres5 = Math.abs((float)(L.get(item))/n - (float)(L.get(i))/n );
+					BigDecimal b = new BigDecimal(tmpres5);
+					float f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+					if (f1 > SDC){
 						if(transet.get(sind).itemSets.size()==1 && transet.get(sind).itemSets.get(eind).items.size()==1){
 							flagjump = 1;
 							transet.remove(sind);

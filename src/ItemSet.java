@@ -19,8 +19,15 @@ public class ItemSet {
 	}
 	
 	public void deleteFirstNItems(int N){
-		for(int i=0; i < N; i++)
-			this.items.remove(0);
+		int num = this.items.size();
+		if(N==0)
+			return;
+		if(N>0)
+			for(int i=0; i < N; i++)
+				this.items.remove(0);
+		else
+			for(int i=0; i< num+N; i++)
+				this.items.remove(0);
 	}
 	public void delItemOfindex(int ind){
 		this.items.remove(ind);

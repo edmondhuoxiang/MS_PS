@@ -17,7 +17,7 @@ public class MS_PS {
 		T = utils.readDataFile(dataFile);
 		MIS = util.readParaFile(paraFile);
 		SDC = utils.getSDC();
-		N = T.size()-1;
+		N = T.size();
 	}
 	
 	public static HashMap<Integer, ArrayList<Pair<Transaction, Integer>>>r_PrefixSpan(Integer i, ArrayList<Transaction> S, int n, int min_sup, ArrayList<Integer> freqM,
@@ -100,8 +100,8 @@ public class MS_PS {
 		//Data Initialization
 		//String dataFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/data1.txt";
 		//String paraFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/para1.txt";
-		String dataFile = "/Users/edmond/MS_PS/exmaple/data-1.txt";
-		String paraFile = "/Users/edmond/MS_PS/exmaple/para1-1.txt";
+		String dataFile = "/Users/edmond/MS_PS/exmaple/data-2.txt";
+		String paraFile = "/Users/edmond/MS_PS/exmaple/para2-1.txt";
 		MS_PS msps = new MS_PS(paraFile, dataFile);	
 		for(int i=0; i < msps.T.size(); i++){
 			Transaction tran = msps.T.get(i);
@@ -188,7 +188,7 @@ public class MS_PS {
 			if(!S.get(i).isEmpty())
 				F = r_PrefixSpan(i, S.get(i), n, (int) Math.ceil(MIS.get(i)*n), freqM, M, MIS, F, L);
 			msps.T = util.removei(msps.T,i);
-			/*int index_=1;
+			int index_=1;
 			while(F.get(index_)!=null){
 				System.out.print("The number of length "+index_+" sequential patterns is " + F.get(index_).size() + "\n");
 				for(Pair<Transaction, Integer> item : F.get(index_)){
@@ -200,7 +200,7 @@ public class MS_PS {
 				System.out.println();
 				index_++;
 			}
-			System.out.print("?????????????\n");*/
+			System.out.print("?????????????\n");
 		}
 		System.out.println("*******************************");
 		
