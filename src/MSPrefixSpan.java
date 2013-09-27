@@ -142,7 +142,7 @@ public class MSPrefixSpan {
 					Transaction tmpTran = new Transaction();
 					tmpTran.itemSets.add(patternTmp);
 					Pair<Integer,Integer> pairTmp = utils.isContained(tmpQuery, tmpTran);
-					if(pairTmp.getFirst()==1 && pairTmp.getSecond()==-1)
+					if(pairTmp.getFirst()==-1 && pairTmp.getSecond()==-1)
 					{
 						patternTmp.items.add(item);
 						tmpTran.itemSets.clear();

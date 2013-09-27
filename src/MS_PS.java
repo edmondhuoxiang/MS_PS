@@ -98,8 +98,10 @@ public class MS_PS {
 	}
 	public static void main(String [ ] args) throws IOException{	
 		//Data Initialization
-		String dataFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/data1.txt";
-		String paraFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/para1.txt";
+		//String dataFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/data1.txt";
+		//String paraFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/para1.txt";
+		String dataFile = "/Users/edmond/MS_PS/exmaple/data-1.txt";
+		String paraFile = "/Users/edmond/MS_PS/exmaple/para1-1.txt";
 		MS_PS msps = new MS_PS(paraFile, dataFile);	
 		for(int i=0; i < msps.T.size(); i++){
 			Transaction tran = msps.T.get(i);
