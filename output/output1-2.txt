@@ -1,0 +1,79 @@
+The number of length 1 sequential patterns is 7
+<{10}>
+Count: 6
+<{20}>
+Count: 6
+<{30}>
+Count: 6
+<{40}>
+Count: 6
+<{50}>
+Count: 6
+<{70}>
+Count: 6
+<{80}>
+Count: 6
+
+The number of length 2 sequential patterns is 16
+<{10,40}>
+Count: 6
+<{10}{40}>
+Count: 6
+<{20,30}>
+Count: 6
+<{20}{30}>
+Count: 4
+<{20,70}>
+Count: 4
+<{20}{70}>
+Count: 6
+<{20}{80}>
+Count: 4
+<{30}{30}>
+Count: 4
+<{30,70}>
+Count: 6
+<{30}{70}>
+Count: 6
+<{30,80}>
+Count: 4
+<{30}{80}>
+Count: 4
+<{40}{40}>
+Count: 6
+<{70}{70}>
+Count: 4
+<{70,80}>
+Count: 6
+<{80}{70}>
+Count: 4
+
+The number of length 3 sequential patterns is 11
+<{10,40}{40}>
+Count: 6
+<{20,30}{30}>
+Count: 4
+<{20,30,70}>
+Count: 4
+<{20,30}{70}>
+Count: 6
+<{20,30}{80}>
+Count: 4
+<{20}{30,70}>
+Count: 4
+<{20}{70,80}>
+Count: 4
+<{30}{30,70}>
+Count: 4
+<{30,70,80}>
+Count: 4
+<{30}{70,80}>
+Count: 4
+<{70,80}{70}>
+Count: 4
+
+The number of length 4 sequential patterns is 2
+<{20,30}{30,70}>
+Count: 4
+<{20,30}{70,80}>
+Count: 4
