@@ -25,12 +25,15 @@ Default output path: ./output/
 
 The number of length 1 sequential patterns is 20
 Pattern: <{2}> Count: 4
+
 ......
 
 The number of length 2 sequential patterns is 7
 Pattern: <{2}{5}> Count: 1
+
 ......
 
 The number of length 3 sequential patterns is 5
 Pattern: <{2}{5}{7}> Count 1
+
 ......
