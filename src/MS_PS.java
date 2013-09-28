@@ -101,10 +101,9 @@ public class MS_PS {
 	}
 	public static void main(String [ ] args) throws IOException{	
 		//Data Initialization
-		//String dataFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/data1.txt";
-		//String paraFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/para1.txt";
-		String dataFile = "/Users/edmond/MS_PS/exmaple/data-sample.txt";
-		String paraFile = "/Users/edmond/MS_PS/exmaple/para-sample.txt";
+		String dataFile = "./example/data-2.txt";
+		String paraFile = "./example/para2-1.txt";
+		String resFile = "./output/output2-1.txt";
 		MS_PS msps = new MS_PS(paraFile, dataFile);	
 		for(int i=0; i < msps.T.size(); i++){
 			Transaction tran = msps.T.get(i);
@@ -210,7 +209,7 @@ public class MS_PS {
 		}
 		System.out.println("*******************************");
 		try {
-			File file = new File("./outPut.txt");
+			File file = new File(resFile);
 			if(!file.exists())
 				file.createNewFile();
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
@@ -228,6 +227,8 @@ public class MS_PS {
 				System.out.print(" Count: " + b + "\n");
 				bw.write(str);
 				}
+				bw.write("\n");
+				System.out.println();
 				index++;
 			}
 			bw.close();
