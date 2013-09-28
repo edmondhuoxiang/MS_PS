@@ -204,6 +204,58 @@ public class util {
 		return transet;
 	}
 	
+	public ArrayList<Pair<Transaction,Integer>> removek(ArrayList<Pair<Transaction,Integer>> pairSet, HashMap<Integer, Integer>L, Float SDC, Integer n){
+		int sind = 0;
+		int flagjump = 0;
+		while(sind < pairSet.size()){
+			Transaction tran = pairSet.get(sind).getFirst();
+			int eind = 0;
+			while(eind < tran.itemSets.size()){
+				int iind = 0;
+				while(iind < tran.itemSets.get(eind).items.size()){
+					Integer item = tran.itemSets.get(eind).items.get(iind);
+					Integer item2;
+					int idx1 = eind;
+					int idx2;
+					while(idx1 < tran.itemSets.size()){
+						if(idx1 == eind)
+							idx2 = iind;
+						else
+							idx2 = 0;
+						while(idx2 < tran.itemSets.get(idx1).items.size()){
+							item2 = tran.itemSets.get(idx1).items.get(idx2);
+							float tmpres = Math.abs((float)(L.get(item))/n - (float)(L.get(item2))/n );
+							BigDecimal b = new BigDecimal(tmpres);
+							float f = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+							if (f > SDC){
+								flagjump = 1;
+								pairSet.remove(sind);
+								sind -= 1;
+								break;
+							}
+							idx2++;
+						}
+						if(flagjump == 1)
+							break;
+						idx1++;
+						
+					}
+					if(flagjump == 1)
+						break;
+					iind += 1;
+				}
+				if(flagjump == 1){
+					flagjump = 0;
+					break;
+				}
+				eind += 1;
+			}
+			sind += 1;
+		}
+		return pairSet;
+	}
+	
+	
 	public Pair<Integer, Integer> isContained(Transaction query, Transaction tran){
 		int lenQuery = query.itemSets.size();
 		int lenTran = tran.itemSets.size();

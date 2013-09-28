@@ -58,7 +58,22 @@ public class Transaction {
 			}
 			System.out.printf(set.items.get(set.items.size()-1)+"}");
 		}
-		System.out.println(">");
+		System.out.print(">");
+	}
+	
+	
+	public String toString(){
+		String str = "<";
+		for(int i=0; i < itemSets.size(); i++){
+			str += "{";
+			ItemSet set = itemSets.get(i);
+			for(int j=0; j < set.items.size() - 1;j++){
+				str += set.items.get(j).toString() + ",";
+			}
+			str += set.items.get(set.items.size()-1).toString()+"}";
+		}
+		str += ">";
+		return str;
 	}
 	
 	public boolean isContained(Transaction trans){

@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,8 +103,8 @@ public class MS_PS {
 		//Data Initialization
 		//String dataFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/data1.txt";
 		//String paraFile = "/Users/edmond/Downloads/cse514-msprefixspan/src/para1.txt";
-		String dataFile = "/Users/edmond/MS_PS/exmaple/data-2.txt";
-		String paraFile = "/Users/edmond/MS_PS/exmaple/para2-1.txt";
+		String dataFile = "/Users/edmond/MS_PS/exmaple/data-sample.txt";
+		String paraFile = "/Users/edmond/MS_PS/exmaple/para-sample.txt";
 		MS_PS msps = new MS_PS(paraFile, dataFile);	
 		for(int i=0; i < msps.T.size(); i++){
 			Transaction tran = msps.T.get(i);
@@ -187,8 +190,11 @@ public class MS_PS {
 			//r-PrefixSpan
 			if(!S.get(i).isEmpty())
 				F = r_PrefixSpan(i, S.get(i), n, (int) Math.ceil(MIS.get(i)*n), freqM, M, MIS, F, L);
+			for(int idx: F.keySet())
+				if(F.get(idx)!=null)
+					F.put(idx, utils.removek(F.get(idx), L, SDC, N));
 			msps.T = util.removei(msps.T,i);
-			int index_=1;
+	/*		int index_=1;
 			while(F.get(index_)!=null){
 				System.out.print("The number of length "+index_+" sequential patterns is " + F.get(index_).size() + "\n");
 				for(Pair<Transaction, Integer> item : F.get(index_)){
@@ -200,21 +206,33 @@ public class MS_PS {
 				System.out.println();
 				index_++;
 			}
-			System.out.print("?????????????\n");
+			System.out.print("?????????????\n");*/
 		}
 		System.out.println("*******************************");
-		
-		int index=1;
-		while(F.get(index)!=null){
-			System.out.print("The number of length "+index+" sequential patterns is " + F.get(index).size() + "\n");
-			for(Pair<Transaction, Integer> item : F.get(index)){
+		try {
+			File file = new File("./outPut.txt");
+			if(!file.exists())
+				file.createNewFile();
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			int index=1;
+			while(F.get(index)!=null && F.get(index).size()!=0){
+				System.out.print("The number of length "+index+" sequential patterns is " + F.get(index).size() + "\n");
+				bw.write("The number of length "+index+" sequential patterns is " + F.get(index).size() + "\n");
+				for(Pair<Transaction, Integer> item : F.get(index)){
 				Transaction a = item.getFirst();
 				Integer b = item.getSecond();
+				System.out.print("Pattern: ");
 				a.print();
-				System.out.print("Count: " + b + "\n");
+				String str = "Pattern: " + a.toString() + " Count: " + b.toString() + "\n";
+				System.out.print(" Count: " + b + "\n");
+				bw.write(str);
+				}
+				index++;
 			}
-			System.out.println();
-			index++;
+			bw.close();
+		}catch (IOException e){
+			e.printStackTrace();
 		}
 	}
 
